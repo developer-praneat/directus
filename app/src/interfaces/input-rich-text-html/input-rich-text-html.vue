@@ -6,6 +6,7 @@
 			:init="editorOptions"
 			:disabled="disabled"
 			model-events="change keydown blur focus paste ExecCommand SetContent"
+			@dirty="setDirty"
 			@focusin="setFocus(true)"
 			@focusout="setFocus(false)"
 		/>
@@ -144,7 +145,6 @@
 <script lang="ts">
 import { useI18n } from 'vue-i18n';
 import { defineComponent, PropType, ref, computed, toRefs, ComponentPublicInstance } from 'vue';
-
 import 'tinymce/tinymce';
 import 'tinymce/themes/silver';
 import 'tinymce/plugins/media/plugin';
@@ -162,8 +162,8 @@ import 'tinymce/plugins/paste/plugin';
 import 'tinymce/plugins/preview/plugin';
 import 'tinymce/plugins/fullscreen/plugin';
 import 'tinymce/plugins/directionality/plugin';
+import 'tinymce/plugins/template/plugin';
 import 'tinymce/icons/default';
-
 import Editor from '@tinymce/tinymce-vue';
 import getEditorStyles from './get-editor-styles';
 import { escapeRegExp } from 'lodash';
@@ -173,7 +173,6 @@ import useLink from './useLink';
 import useSourceCode from './useSourceCode';
 import { getToken } from '@/api';
 import { getPublicURL } from '@/utils/get-root-path';
-
 type CustomFormat = {
 	title: string;
 	inline: string;
@@ -181,7 +180,6 @@ type CustomFormat = {
 	styles: Record<string, string>;
 	attributes: Record<string, string>;
 };
-
 export default defineComponent({
 	components: { Editor },
 	props: {
@@ -190,7 +188,7 @@ export default defineComponent({
 			default: '',
 		},
 		toolbar: {
-			type: Array as PropType<string[]>,
+			type: Array as PropType<string[] | null>,
 			default: () => [
 				'bold',
 				'italic',
@@ -234,16 +232,14 @@ export default defineComponent({
 	emits: ['input'],
 	setup(props, { emit }) {
 		const { t } = useI18n();
-
 		const editorRef = ref<any | null>(null);
 		const editorElement = ref<ComponentPublicInstance | null>(null);
+		const isEditorDirty = ref(false);
 		const { imageToken } = toRefs(props);
-
 		const { imageDrawerOpen, imageSelection, closeImageDrawer, onImageSelect, saveImage, imageButton } = useImage(
 			editorRef,
 			imageToken
 		);
-
 		const {
 			mediaDrawerOpen,
 			mediaSelection,
@@ -257,11 +253,8 @@ export default defineComponent({
 			mediaSource,
 			mediaButton,
 		} = useMedia(editorRef, imageToken);
-
 		const { linkButton, linkDrawerOpen, closeLinkDrawer, saveLink, linkSelection } = useLink(editorRef);
-
 		const { codeDrawerOpen, code, closeCodeDrawer, saveCode, sourceCodeButton } = useSourceCode(editorRef);
-
 		const replaceTokens = (value: string, token: string | null) => {
 			const url = getPublicURL();
 			const regex = new RegExp(
@@ -270,44 +263,37 @@ export default defineComponent({
 				)}assets/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(?:\\?[^#"]*)?(?:#[^"]*)?)("[^>]*>)`,
 				'gi'
 			);
-
 			return value.replace(regex, (_, pre, matchedUrl, post) => {
 				const matched = new URL(matchedUrl);
 				const params = new URLSearchParams(matched.search);
-
 				if (!token) {
 					params.delete('access_token');
 				} else {
 					params.set('access_token', token);
 				}
-
 				const paramsString = params.toString().length > 0 ? `?${params.toString()}` : '';
-
 				return `${pre}${matched.origin}${matched.pathname}${paramsString}${post}`;
 			});
 		};
-
 		const internalValue = computed({
 			get() {
 				if (!props.value) return '';
 				return replaceTokens(props.value, getToken());
 			},
 			set(newValue: string) {
+				if (!isEditorDirty.value) return;
 				if (newValue !== props.value && (props.value === null && newValue === '') === false) {
 					const removeToken = replaceTokens(newValue, props.imageToken ?? null);
 					emit('input', removeToken);
 				}
 			},
 		});
-
 		const editorOptions = computed(() => {
 			let styleFormats = null;
-
 			if (Array.isArray(props.customFormats) && props.customFormats.length > 0) {
 				styleFormats = props.customFormats;
 			}
-
-			let toolbarString = props.toolbar
+			let toolbarString = (props.toolbar ?? [])
 				.map((t) =>
 					t
 						.replace(/^link$/g, 'customLink')
@@ -316,18 +302,17 @@ export default defineComponent({
 						.replace(/^image$/g, 'customImage')
 				)
 				.join(' ');
-
 			if (styleFormats) {
 				toolbarString += ' styleselect';
 			}
-
 			return {
 				skin: false,
 				skin_url: false,
 				content_css: false,
 				content_style: getEditorStyles(props.font as 'sans-serif' | 'serif' | 'monospace'),
+				selector: 'textarea',
 				plugins:
-					'media table hr lists image link pagebreak code insertdatetime autoresize paste preview fullscreen directionality',
+					'media table hr lists image link pagebreak code insertdatetime autoresize paste preview fullscreen directionality template',
 				branding: false,
 				max_height: 1000,
 				elementpath: false,
@@ -339,17 +324,18 @@ export default defineComponent({
 				style_formats: styleFormats,
 				file_picker_types: 'customImage customMedia image media',
 				link_default_protocol: 'https',
+				templates: 'template/template.json',
 				setup,
 				...(props.tinymceOverrides || {}),
 			};
 		});
-
 		return {
 			t,
 			editorElement,
 			editorOptions,
 			internalValue,
 			setFocus,
+			setDirty,
 			onImageSelect,
 			saveImage,
 			imageDrawerOpen,
@@ -376,22 +362,20 @@ export default defineComponent({
 			saveCode,
 			sourceCodeButton,
 		};
-
 		function setup(editor: any) {
 			editorRef.value = editor;
-
 			editor.ui.registry.addToggleButton('customImage', imageButton);
 			editor.ui.registry.addToggleButton('customMedia', mediaButton);
 			editor.ui.registry.addToggleButton('customLink', linkButton);
 			editor.ui.registry.addButton('customCode', sourceCodeButton);
 		}
-
+		function setDirty() {
+			isEditorDirty.value = true;
+		}
 		function setFocus(val: boolean) {
 			if (editorElement.value == null) return;
 			const body = editorElement.value.$el.parentElement?.querySelector('.tox-tinymce');
-
 			if (body == null) return;
-
 			if (val) {
 				body.classList.add('focus');
 			} else {
@@ -409,15 +393,12 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import '@/styles/mixins/form-grid';
-
 .body {
 	padding: 20px;
 }
-
 .grid {
 	@include form-grid;
 }
-
 .image-preview,
 .media-preview {
 	width: 100%;
@@ -426,13 +407,11 @@ export default defineComponent({
 	object-fit: cover;
 	border-radius: var(--border-radius);
 }
-
 .content {
 	padding: var(--content-padding);
 	padding-top: 0;
 	padding-bottom: var(--content-padding);
 }
-
 :deep(.v-card-title) {
 	margin-bottom: 24px;
 	font-size: 24px;

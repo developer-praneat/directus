@@ -216,6 +216,10 @@ export default defineInterface({
 							value: 'ltr rtl',
 							text: '$t:wysiwyg_options.directionality',
 						},
+						{
+							value: 'template',
+							text: '$t:wysiwyg_options.template',
+						},
 					],
 				},
 			},

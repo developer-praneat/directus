@@ -60,7 +60,7 @@ create_user: Create User
 create_webhook: Create Webhook
 invite_users: Invite Users
 email_examples: "admin{'@'}example.com, user{'@'}example.com..."
-url_example: "https://example.com"
+url_example: 'https://example.com'
 invite: Invite
 email_already_invited: Email "{email}" has already been invited
 emails: Emails
@@ -670,6 +670,7 @@ wysiwyg_options:
   source_code: Edit Source Code
   fullscreen: Full Screen
   directionality: Directionality
+  template: Template
 dropdown: Dropdown
 choices: Choices
 choices_option_configured_incorrectly: Choices configured incorrectly
@@ -857,7 +858,8 @@ fields:
     basemaps_style: Mapbox Style
     mapbox_key: Mapbox Access Token
     mapbox_placeholder: pk.eyJ1Ijo.....
-    transforms_note: The Sharp method name and its arguments. See https://sharp.pixelplumbing.com/api-constructor for more information.
+    transforms_note:
+      The Sharp method name and its arguments. See https://sharp.pixelplumbing.com/api-constructor for more information.
     additional_transforms: Additional Transformations
     project_name: Project Name
     project_url: Project URL
@@ -919,7 +921,8 @@ field_options:
         fit_text: Fit inside
         outside_text: Fit outside
     additional_transforms: Additional Transformations
-    transforms_note: The Sharp method name and its arguments. See https://sharp.pixelplumbing.com/api-constructor for more information.
+    transforms_note:
+      The Sharp method name and its arguments. See https://sharp.pixelplumbing.com/api-constructor for more information.
     mapbox_key: Mapbox Access Token
     mapbox_placeholder: pk.eyJ1Ijo.....
     basemaps_raster: Raster
@@ -1233,7 +1236,7 @@ interfaces:
     no_collection: The collection could not be found
   system-folder:
     folder: Folder
-    description:  Select a folder
+    description: Select a folder
     field_hint: Puts newly uploaded files in selected folder. Does not affect existing files that are selected.
     root_name: File Library Root
     system_default: System Defaults
