@@ -18,9 +18,6 @@
 				<v-button v-tooltip="t('download')" icon rounded :href="downloadSrc" :download="image.filename_download">
 					<v-icon name="get_app" />
 				</v-button>
-				<v-button v-tooltip="t('edit')" icon rounded @click="editDrawerActive = true">
-					<v-icon name="open_in_new" />
-				</v-button>
 				<v-button v-tooltip="t('deselect')" icon rounded @click="deselect">
 					<v-icon name="close" />
 				</v-button>
