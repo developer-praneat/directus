@@ -28,7 +28,13 @@
 		<template v-else>
 			<p class="type-label">{{ t('drag_file_here') }}</p>
 			<p class="type-text">{{ t('click_to_browse') }}</p>
-			<input class="browse" type="file" :multiple="multiple" @input="onBrowseSelect" />
+			<input
+				class="browse"
+				type="file"
+				:multiple="multiple"
+				@input="onBrowseSelect"
+				accept="image/png, image/jpg, image/jpeg"
+			/>
 
 			<template v-if="fromUrl !== false || fromLibrary !== false">
 				<v-menu show-arrow placement="bottom-end">
