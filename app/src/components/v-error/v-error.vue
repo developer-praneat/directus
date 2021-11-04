@@ -1,5 +1,5 @@
 <template>
-	<div class="v-error selectable">
+	<div class="v-error selectable" v-if="code !== 'INVALID_SLUG'">
 		<output>[{{ code }}] {{ message }}</output>
 		<v-icon
 			v-if="showCopy"
