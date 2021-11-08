@@ -14,12 +14,10 @@
 				}"
 				@update:model-value="$emit('input', $event)"
 			/>
-			<div v-if="value === true" :style="{ paddingTop: '8px' }">
-				<div>Branch 1</div>
-				<div>Branch 2</div>
-				<div>Branch 3</div>
-				<div>Branch 4</div>
-				<div>Branch 5</div>
+			<div v-if="value === true && branches && branches.length > 0">
+				<div v-for="(branch, index) in branches" :key="index">
+					{{ branch }}
+				</div>
 			</div>
 		</div>
 	</div>
@@ -41,7 +39,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import { i18n } from '@/lang';
 
 export default defineComponent({
@@ -72,5 +70,14 @@ export default defineComponent({
 		},
 	},
 	emits: ['input'],
+	setup(props) {
+		const branches = ref([]);
+		onMounted(async () => {
+			if (props.label === 'เลือกสาขาทั้งหมด') {
+				branches.value = ['branch1', 'branch2', 'branch3'];
+			}
+		});
+		return { branches };
+	},
 });
 </script>
