@@ -14,11 +14,11 @@
 				}"
 				@update:model-value="$emit('input', $event)"
 			/>
-			<div v-if="value === true && branches && branches.length > 0">
-				<div v-for="(branch, index) in branches" :key="index">
-					{{ branch }}
-				</div>
-			</div>
+			<ul v-if="value === true && branches && branches.length > 0" :style="{ paddingTop: '8px' }">
+				<li v-for="branch in branches" :key="branch.id">
+					{{ branch.name }}
+				</li>
+			</ul>
 		</div>
 	</div>
 	<div v-else>
@@ -74,7 +74,15 @@ export default defineComponent({
 		const branches = ref([]);
 		onMounted(async () => {
 			if (props.label === 'เลือกสาขาทั้งหมด') {
-				branches.value = ['branch1', 'branch2', 'branch3'];
+				const getBranch = await fetch(`http://localhost:8055/items/branches?filter[status][_eq]=published`);
+				const tempData = await getBranch.json();
+				const branchesData = tempData.data.map(({ id, sub_title_th, sub_title_en }) => {
+					return {
+						id,
+						name: `${sub_title_th}(${sub_title_en})`,
+					};
+				});
+				branches.value = branchesData;
 			}
 		});
 		return { branches };
