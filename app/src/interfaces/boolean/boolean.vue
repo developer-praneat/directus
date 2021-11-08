@@ -74,12 +74,27 @@ export default defineComponent({
 		const branches = ref([]);
 		onMounted(async () => {
 			if (props.label === 'เลือกสาขาทั้งหมด') {
-				const getBranch = await fetch(`http://localhost:8055/items/branches?filter[status][_eq]=published`);
+				const now =
+					new Date().getFullYear() +
+					'-' +
+					('00' + (new Date().getMonth() + 1)).slice(-2) +
+					'-' +
+					('00' + new Date().getDate()).slice(-2) +
+					' ' +
+					('00' + new Date().getHours()).slice(-2) +
+					':' +
+					('00' + new Date().getMinutes()).slice(-2) +
+					':' +
+					('00' + new Date().getSeconds()).slice(-2);
+
+				const getBranch = await fetch(
+					`${window.location.origin}/items/branches?filter[status][_eq]=published&filter[published_date][_lte]=${now}`
+				);
 				const tempData = await getBranch.json();
 				const branchesData = tempData.data.map(({ id, sub_title_th, sub_title_en }) => {
 					return {
 						id,
-						name: `${sub_title_th}(${sub_title_en})`,
+						name: `${sub_title_th} (${sub_title_en})`,
 					};
 				});
 				branches.value = branchesData;
