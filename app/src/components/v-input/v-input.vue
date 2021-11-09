@@ -183,7 +183,10 @@ export default defineComponent({
 			const value = (event.target as HTMLInputElement).value;
 
 			if (props.slug === true) {
-				const slugSafeCharacters = 'abcdefghijklmnopqrstuvwxyz01234567890-_~ '.split('');
+				const slugSafeCharacters =
+					'กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรฤฤๅลฦฦๅวศษสหฬอฮะา-ิ-ี-ึ-ื-ุ-ูเแ-ัโำใไ-่-้-๊-๋-็-์abcdefghijklmnopqrstuvwxyz01234567890-_~'.split(
+						''
+					);
 
 				const isAllowed = slugSafeCharacters.includes(key) || systemKeys.includes(key);
 
@@ -233,7 +236,7 @@ export default defineComponent({
 			} else {
 				if (props.slug === true) {
 					const endsWithSpace = value.endsWith(' ');
-					value = slugify(value, { separator: props.slugSeparator });
+					// value = slugify(value, { separator: props.slugSeparator });
 					if (endsWithSpace) value += props.slugSeparator;
 				}
 
