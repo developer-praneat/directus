@@ -58,7 +58,7 @@ h6 {
 }
 p {
 	font-family: ${cssVar(`--family-${font}`)}, serif;
-	font-size: 15px;
+	font-size: 16px;
 	line-height: 24px;
 	font-weight: 500;
 	margin: 1.5em 0;
@@ -69,7 +69,7 @@ a {
 }
 ul, ol {
 	font-family: ${cssVar(`--family-${font}`)}, serif;
-	font-size: 15px;
+	font-size: 16px;
 	line-height: 24px;
 	font-weight: 500;
 	margin: 1.5em 0;
@@ -84,7 +84,7 @@ b, strong {
 	font-weight: 700;
 }
 code {
-	font-size: 15px;
+	font-size: 16px;
 	line-height: 24px;
 	font-weight: 500;
 	padding: 2px 4px;
@@ -94,7 +94,7 @@ code {
 	overflow-wrap: break-word;
 }
 pre {
-	font-size: 15px;
+	font-size: 16px;
 	line-height: 24px;
 	font-weight: 500;
 	padding: 1em;
@@ -105,7 +105,7 @@ pre {
 }
 blockquote {
 	font-family: ${cssVar(`--family-${font}`)}, serif;
-	font-size: 15px;
+	font-size: 16px;
 	line-height: 24px;
 	font-weight: 500;
 	border-left: 2px solid ${cssVar('--border-normal')};
@@ -128,7 +128,7 @@ hr {
 }
 table {
 	border-collapse: collapse;
-	font-size: 15px;
+	font-size: 16px;
 	line-height: 24px;
 	font-weight: 500;
 }

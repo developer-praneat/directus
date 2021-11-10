@@ -311,6 +311,7 @@ export default defineComponent({
 				content_css: false,
 				content_style: getEditorStyles(props.font as 'sans-serif' | 'serif' | 'monospace'),
 				selector: 'textarea',
+				fontsize_formats: '12px 14px 16px 20px 24px 32px 48px',
 				plugins:
 					'media table hr lists image link pagebreak code insertdatetime autoresize paste preview fullscreen directionality template',
 				branding: false,
