@@ -184,7 +184,7 @@ export default defineComponent({
 
 			if (props.slug === true) {
 				const slugSafeCharacters =
-					'กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรฤฤๅลฦฦๅวศษสหฬอฮะา-ิ-ี-ึ-ื-ุ-ูเแ-ัโำใไ-่-้-๊-๋-็-์abcdefghijklmnopqrstuvwxyz01234567890-_~'.split(
+					'กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรฤฤๅลฦฦๅวศษสหฬอฮะา-ิ-ี-ึ-ื-ุ-ูเแ-ัโำใไ-่-้-๊-๋-็-์abcdefghijklmnopqrstuvwxyz01234567890-'.split(
 						''
 					);
 
@@ -200,7 +200,7 @@ export default defineComponent({
 			}
 
 			if (props.dbSafe === true) {
-				const dbSafeCharacters = 'abcdefghijklmnopqrstuvwxyz01234567890_ '.split('');
+				const dbSafeCharacters = 'abcdefghijklmnopqrstuvwxyz01234567890_'.split('');
 
 				const isAllowed = dbSafeCharacters.includes(key) || systemKeys.includes(key) || key.startsWith('arrow');
 
@@ -235,9 +235,11 @@ export default defineComponent({
 				emit('update:modelValue', Number(value));
 			} else {
 				if (props.slug === true) {
-					const endsWithSpace = value.endsWith(' ');
+					// const endsWithSpace = value.endsWith(' ');
 					// value = slugify(value, { separator: props.slugSeparator });
-					if (endsWithSpace) value += props.slugSeparator;
+					// if (endsWithSpace) value += props.slugSeparator;
+					value = value.replace(' ', '-');
+					value = value.replace('.', '');
 				}
 
 				if (props.dbSafe === true) {
