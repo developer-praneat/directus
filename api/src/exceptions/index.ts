@@ -8,6 +8,7 @@ export * from './invalid-otp';
 export * from './invalid-payload';
 export * from './invalid-query';
 export * from './invalid-slug';
+export * from './invalid-telephone';
 export * from './method-not-allowed';
 export * from './range-not-satisfiable';
 export * from './route-not-found';
