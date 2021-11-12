@@ -121,7 +121,7 @@ validationError:
   lt: Value has to be less than {valid}
   lte: Value has to be less than or equal to {valid}
   empty: Value has to be empty
-  nempty: Value can't be empt
+  nempty: Value can't be empty
   null: Value has to be null
   nnull: Value can't be null
   required: Value is required
