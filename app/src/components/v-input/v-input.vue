@@ -184,7 +184,7 @@ export default defineComponent({
 
 			if (props.slug === true) {
 				const slugSafeCharacters =
-					'กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรฤฤๅลฦฦๅวศษสหฬอฮะา-ิ-ี-ึ-ื-ุ-ูเแ-ัโำใไ-่-้-๊-๋-็-์abcdefghijklmnopqrstuvwxyz01234567890-'.split(
+					'กขฃคฅฆงจฉชซฌญฎฏฐฑฒณดตถทธนบปผฝพฟภมยรฤฤๅลฦฦๅวศษสหฬอฮะา-ิ-ี-ึ-ื-ุ-ูเแ-ัโำใไ-่-้-๊-๋-็-์abcdefghijklmnopqrstuvwxyz01234567890๑๒๓๔๕๖๗๘๙๐-'.split(
 						''
 					);
 
