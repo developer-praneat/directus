@@ -329,6 +329,7 @@ export default defineComponent({
 				file_picker_types: 'customImage customMedia image media',
 				link_default_protocol: 'https',
 				templates: location === 'branches' ? 'template/template-address.json' : 'template/template-harborland.json',
+				setup,
 				...(props.tinymceOverrides || {}),
 			};
 		});
