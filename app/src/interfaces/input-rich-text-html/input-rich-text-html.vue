@@ -305,6 +305,9 @@ export default defineComponent({
 			if (styleFormats) {
 				toolbarString += ' styleselect';
 			}
+
+			let location = window.location.pathname.split('/')[3];
+
 			return {
 				skin: false,
 				skin_url: false,
@@ -325,8 +328,7 @@ export default defineComponent({
 				style_formats: styleFormats,
 				file_picker_types: 'customImage customMedia image media',
 				link_default_protocol: 'https',
-				templates: 'template/template.json',
-				setup,
+				templates: location === 'branches' ? 'template/template-address.json' : 'template/template-harborland.json',
 				...(props.tinymceOverrides || {}),
 			};
 		});
