@@ -306,7 +306,7 @@ export default defineComponent({
 				toolbarString += ' styleselect';
 			}
 
-			let location = window.location.pathname.split('/')[3];
+			const location = window.location.pathname.split('/')[3];
 
 			return {
 				skin: false,
